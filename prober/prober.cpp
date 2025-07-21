@@ -1,5 +1,6 @@
 // prober.cpp
 // Compile with: g++ -o prober prober.cpp -lnvidia-ml
+// run ./prober output_filename.csv
 
 #include <nvml.h>
 #include <chrono>
@@ -7,8 +8,26 @@
 #include <fstream>
 #include <time.h>    // for clock_gettime, clock_nanosleep, timespec
 #include <errno.h>   // for EINTR
+#include <signal.h>
+
+volatile sig_atomic_t keep_running = 1;
+
+void handle_signal(int signal){
+    keep_running = 0;
+}
 
 int main(int argc, char** argv) {
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << "<output_filename.csv>\n";
+        return 1;
+    }
+
+    const char* filename = argv[1];
+
+    // 0) Signal handler
+    signal(SIGTERM, handle_signal);
+    signal(SIGINT, handle_signal);
+    
     // 1) Initialize NVML
     if (nvmlInit() != NVML_SUCCESS) {
         std::cerr << "Failed to initialize NVML\n";
@@ -22,9 +41,9 @@ int main(int argc, char** argv) {
     }
 
     // 2) Open output CSV
-    std::ofstream out("power_data.csv");
+    std::ofstream out(filename);
     if (!out) {
-        std::cerr << "Could not open power_data.csv for writing\n";
+        std::cerr << "Could not open " << filename << " for writing\n";
         nvmlShutdown();
         return 1;
     }
@@ -42,7 +61,7 @@ int main(int argc, char** argv) {
     const long interval_ns = 1'000'000;  // 1 ms in nanoseconds
 
     // 4) Main polling loop
-    while (true) {
+    while (keep_running) {
         // Query power usage (milliwatts → watts)
         unsigned int power_mW = 0;
         nvmlDeviceGetPowerUsage(device, &power_mW);

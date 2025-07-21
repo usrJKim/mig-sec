@@ -1,0 +1,25 @@
+FROM nvidia/cuda:12.9.0-base-ubuntu22.04
+
+# 1) Install system tools, build essentials and CUDA toolkit, plus Python3/venv/pip
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      build-essential \
+      nvidia-cuda-toolkit \
+      python3 \
+      python3-venv \
+      python3-pip && \
+    rm -rf /var/lib/apt/lists/*
+
+# 2) Install the NVML Python bindings and other Python libs
+RUN pip3 install --no-cache-dir \
+      pynvml \
+      torch \
+      numpy \
+      matplotlib \
+      pandas \
+      scikit-learn
+
+WORKDIR /workspace
+COPY simpleTransformer/ simpleTransformer/
+
+ENTRYPOINT ["python3", "simpleTransformer/model.py"]
