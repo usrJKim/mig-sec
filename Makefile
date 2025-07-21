@@ -16,14 +16,14 @@ all: build
 build: build-prober build-model
 
 build-prober:
-	docker build -f $(PROBER_DOCKERFILE) -t $(PROBER_IMAGE) $(PROBER_DIR)
+	sudo docker build -f $(PROBER_DOCKERFILE) -t $(PROBER_IMAGE) $(PROBER_DIR)
 
 build-model:
-	docker build -f $(MODEL_DOCKERFILE) -t $(MODEL_IMAGE) $(MODEL_DIR)
+	sudo docker build -f $(MODEL_DOCKERFILE) -t $(MODEL_IMAGE) $(MODEL_DIR)
 
 clean:
-	docker rmi -f $(PROBER_IMAGE) || true
-	docker rmi -f $(MODEL_IMAGE) || true
+	sudo docker rmi -f $(PROBER_IMAGE) || true
+	sudo docker rmi -f $(MODEL_IMAGE) || true
 run:
 	./run.sh
 
