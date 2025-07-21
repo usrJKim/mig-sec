@@ -10,7 +10,7 @@ MODEL="gpt"
 KV="False"
 BATCH="8" # If gpt infer, and use kv then, batch should be 1
 
-for LAYERS in 4 8 16; do
+for LAYERS in 4 8 16 20 24 28 32 36; do
   MODEL_ARGS="--mode ${MODE} \
     --model ${MODEL} \
     --usekv ${KV} \
@@ -29,7 +29,7 @@ for LAYERS in 4 8 16; do
   PROBER_OUT="${MODEL_TYPE}_${TIMESTAMP}_power.csv"
   
   # Run prober
-  docker run --rm \
+  sudo docker run --rm --name prober-container\
   --gpus "device=${PROBER_MIG_UUID}" \
   -v $(pwd)/outputs:/outputs \
   prober-image /outputs/prober/${PROBER_OUT} &
@@ -44,12 +44,11 @@ for LAYERS in 4 8 16; do
     MODEL_OUT="${MODEL_TYPE}_${TIMESTAMP}_model.log"
     MODEL_ERR="${MODEL_TYPE}_${TIMESTAMP}_model.err"
   
-    docker run --rm \
+    sudo docker run --rm \
     --gpus "device=${MODEL_MIG_UUID}" \
     model-image \
     $MODEL_ARGS > outputs/${MODEL_OUT} 2> outputs/${MODEL_ERR}
   done
-  
-  kill $PROBER_PID 2>/dev/null
-  wait $PROBER_PID 2>/dev/null
+
+  sudo docker stop prober-container
 done
