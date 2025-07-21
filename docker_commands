@@ -1,0 +1,52 @@
+docker run --rm \
+  --gpus '"device=MIG-AAA-BBB-CCC"' \
+  --mount type=bind,source=/home/you/data,target=/workspace/data \
+  -it nvidia/cuda:12.9.0-base-ubuntu22.04 \
+  /bin/bash
+
+
+# privileged
+docker run --rm \
+  --gpus '"device=MIG-21ee95a0-0fcc-5bcb-9dfa-37910dc301f0"' \
+  --privileged \
+  --mount type=bind,source=/home/v-dlim/mig-sec,target=/workspace/code \
+  -it my-dockerfile:latest \
+  /bin/bash
+
+docker run --rm \
+  --gpus '"device=MIG-a6ef32aa-a74a-5c25-a183-48492dd3cd49"' \
+  --privileged \
+  --mount type=bind,source=/home/v-dlim/mig-sec,target=/workspace/code \
+  -it my-dockerfile:latest \
+  /bin/bash
+
+
+# no privilege
+docker run --rm \
+  --gpus '"device=MIG-21ee95a0-0fcc-5bcb-9dfa-37910dc301f0"' \
+  --mount type=bind,source=/home/v-dlim/mig-sec,target=/workspace/code \
+  -it my-dockerfile:latest \
+  /bin/bash
+
+docker run --rm \
+  --gpus '"device=MIG-a6ef32aa-a74a-5c25-a183-48492dd3cd49"' \
+  --mount type=bind,source=/home/v-dlim/mig-sec,target=/workspace/code \
+  -it my-dockerfile:latest \
+  /bin/bash
+
+
+sudo docker run --rm \
+  --gpus '"device=MIG-d8d1043b-7576-5d33-9a02-d403760c310f"' \
+  --mount type=bind,source=/home/v-dlim/mig-sec,target=/workspace/code \
+  -it my-dockerfile:latest \
+  /bin/bash
+
+sudo docker run --rm \
+  --gpus '"device=MIG-eb1db19e-2301-57dd-a3f4-73c88a7c7e99"' \
+  --mount type=bind,source=/home/v-dlim/mig-sec,target=/workspace/code \
+  -it my-dockerfile:latest \
+  /bin/bash
+
+
+docker image rm [TAG]
+docker build -t my-dockerfile .

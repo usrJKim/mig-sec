@@ -1,0 +1,14 @@
+sudo nvidia-smi -pm 1
+sudo nvidia-smi -i 0 -mig 1
+nvidia-smi mig -i 0 -lgip
+sudo nvidia-smi mig -cgi 1g.10gb,1g.10gb -C
+
+
+nvidia-smi -L
+
+
+
+https://www.scaleway.com/en/docs/gpu/how-to/use-nvidia-mig-technology/
+
+
+https://forums.developer.nvidia.com/t/how-to-use-cuda-visible-devices-for-mig-instances/195069/3
