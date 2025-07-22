@@ -5,36 +5,37 @@
 PROBER_MIG_UUID="MIG_GPU-xxxxx"
 MODEL_MIG_UUID="MIG_GPU-xxxxx"
 ITER_TIME=1 # repeat running model ITER_TIME times
+for ((i=1; i<=100; i++)); do
 #======================= 
-
-for MODEL in "resnet" "vgg19" "alexnet" "densenet" "mobilenet"; do
-  MODEL_TYPE="${MODEL}"
-  MODEL_ARG="--model ${MODEL}"
-    
-  TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-  PROBER_OUT="${MODEL_TYPE}_${TIMESTAMP}_power.csv"
-  
-  # Run prober
-  sudo docker run -it --rm --name prober-container \
-  --gpus "device=${PROBER_MIG_UUID}" \
-  -v $(pwd)/outputs:/outputs \
-  prober-image /outputs/prober/${PROBER_OUT} &
-  
-  PROBER_PID=$!
-  
-  sleep 1 # wait to run prober first
-  
-  # Run model
-  for ((i=1; i<=ITER_TIME; i++)); do
+  for MODEL in "resnet" "vgg19" "alexnet" "densenet" "mobilenet"; do
+    MODEL_TYPE="${MODEL}"
+    MODEL_ARG="--model ${MODEL}"
+      
     TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-    MODEL_OUT="${MODEL_TYPE}_${TIMESTAMP}_model.log"
-    MODEL_ERR="${MODEL_TYPE}_${TIMESTAMP}_model.err"
+    PROBER_OUT="${MODEL_TYPE}_${TIMESTAMP}_power.csv"
+    
+    # Run prober
+    sudo docker run -it --rm --name prober-container \
+    --gpus "device=${PROBER_MIG_UUID}" \
+    -v $(pwd)/outputs:/outputs \
+    prober-image /outputs/prober/${PROBER_OUT} &
+    
+    PROBER_PID=$!
+    
+    sleep 1 # wait to run prober first
+    
+    # Run model
+    for ((i=1; i<=ITER_TIME; i++)); do
+      TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+      MODEL_OUT="${MODEL_TYPE}_${TIMESTAMP}_model.log"
+      MODEL_ERR="${MODEL_TYPE}_${TIMESTAMP}_model.err"
+    
+      sudo docker run -it --rm \
+      --gpus "device=${MODEL_MIG_UUID}" \
+      model-image $MODEL_ARG
+    done
   
-    sudo docker run -it --rm \
-    --gpus "device=${MODEL_MIG_UUID}" \
-    model-image $MODEL_ARG
+    sudo docker stop prober-container
+    sleep 1
   done
-
-  sudo docker stop prober-container
-  sleep 1
 done
