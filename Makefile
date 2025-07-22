@@ -1,5 +1,6 @@
 PROBER_IMAGE=prober-image
 MODEL_IMAGE=model-image
+TEST_IMAGE=test-image
 
 #dir
 PROBER_DIR=prober
@@ -8,8 +9,9 @@ MODEL_DIR=DNNmodels
 #docker files
 PROBER_DOCKERFILE=$(PROBER_DIR)/Dockerfile.prober
 MODEL_DOCKERFILE=$(MODEL_DIR)/Dockerfile.model
+TEST_DOCKERFILE=$(MODEL_DIR)/Dockerfile.test
 
-.PHONY: all build clean build-prober build-model cnn trans
+.PHONY: all build clean build-prober build-model build-test cnn trans
 
 all: build
 
@@ -20,6 +22,9 @@ build-prober:
 
 build-model:
 	sudo docker build -f $(MODEL_DOCKERFILE) -t $(MODEL_IMAGE) $(MODEL_DIR)
+
+build-test:
+	sudo docker build -f $(TEST_DOCKERFILE) -t $(TEST_IMAGE) $(MODEL_DIR)
 
 clean:
 	sudo docker rmi -f $(PROBER_IMAGE) || true
