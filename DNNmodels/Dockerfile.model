@@ -20,5 +20,5 @@ WORKDIR /workspace
 COPY simpleTransformer/ simpleTransformer/
 COPY simpleCNN/ simpleCNN/
 
-ENTRYPOINT ["python3", "simpleTransformer/model.py"]
-# ENTRYPOINT ["python3", "simpleCNN/model.py"]
+# ENTRYPOINT ["python3", "simpleTransformer/model.py"]
+ENTRYPOINT ["python3", "simpleCNN/model.py"]
