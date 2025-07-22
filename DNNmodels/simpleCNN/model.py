@@ -24,7 +24,7 @@ elif args.model == "mobilenet":
     model = models.mobilenet_v2(pretrained=False).cuda()
 
 model.eval()
-x = torch.randn(8, 3, 224, 224) #batch = 8
+x = torch.randn(8, 3, 224, 224).cuda() #batch = 8
 with torch.no_grad():
     output = model(x)
 print("DONE!")

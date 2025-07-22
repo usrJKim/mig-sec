@@ -51,4 +51,5 @@ for LAYERS in 4 8 16 20 24 28 32 36; do
   done
 
   sudo docker stop prober-container
+  sleep 1
 done
