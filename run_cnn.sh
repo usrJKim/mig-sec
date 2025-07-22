@@ -27,10 +27,6 @@ for ((j=1; j<=100; j++)); do
     
     # Run model
     for ((i=1; i<=ITER_TIME; i++)); do
-      TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-      MODEL_OUT="${MODEL_TYPE}_${TIMESTAMP}_model.log"
-      MODEL_ERR="${MODEL_TYPE}_${TIMESTAMP}_model.err"
-    
       sudo docker run -it --rm \
       --gpus "device=${MODEL_MIG_UUID}" \
       model-image $MODEL_ARG

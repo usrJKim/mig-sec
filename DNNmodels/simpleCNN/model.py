@@ -13,19 +13,20 @@ def get_args():
 
 args = get_args()
 if args.model == "resnet":
-    model = models.resnet18(pretrained=False).cuda()
+    model = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1).to("cuda")
 elif args.model == "vgg19":
-    model = models.vgg19(pretrained=False).cuda()
+    model = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1).to("cuda")
 elif args.model == "alexnet":
-    model = models.alexnet(pretrained=False).cuda()
+    model = models.alexnet(weights=models.AlexNet_Weights.IMAGENET1K_V1).to("cuda")
 elif args.model == "densenet":
-    model = models.densenet121(pretrained=False).cuda()
+    model = models.densenet121(weights=models.DenseNet121_Weights.IMAGENET1K_V1).to("cuda")
 elif args.model == "mobilenet":
-    model = models.mobilenet_v2(pretrained=False).cuda()
+    model = models.mobilenet_v2(weights=models.MobileNet_V2_Weights.IMAGENET1K_V1).to("cuda")
 
 model.eval()
-x = torch.randn(8, 3, 224, 224).cuda() #batch = 8
+x = torch.randn(64, 3, 224, 224).to("cuda") #batch = 8
 with torch.no_grad():
     output = model(x)
+print(output.device)
 print("DONE!")
 
