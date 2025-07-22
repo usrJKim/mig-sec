@@ -5,8 +5,9 @@
 PROBER_MIG_UUID="MIG_GPU-xxxxx"
 MODEL_MIG_UUID="MIG_GPU-xxxxx"
 ITER_TIME=1 # repeat running model ITER_TIME times
-for ((i=1; i<=100; i++)); do
+for ((j=1; j<=100; j++)); do
 #======================= 
+  echo "=======${j}/100 iteration========"
   for MODEL in "resnet" "vgg19" "alexnet" "densenet" "mobilenet"; do
     MODEL_TYPE="${MODEL}"
     MODEL_ARG="--model ${MODEL}"
@@ -15,7 +16,7 @@ for ((i=1; i<=100; i++)); do
     PROBER_OUT="${MODEL_TYPE}_${TIMESTAMP}_power.csv"
     
     # Run prober
-    sudo docker run -it --rm --name prober-container \
+    sudo docker run --rm --name prober-container \
     --gpus "device=${PROBER_MIG_UUID}" \
     -v $(pwd)/outputs:/outputs \
     prober-image /outputs/prober/${PROBER_OUT} &
