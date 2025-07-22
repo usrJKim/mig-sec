@@ -8,6 +8,7 @@
 #include <thread>             // for std::thread, sleep_for
 #include <cuda_runtime.h>     // for CUDA runtime API
 
+//TODO set TPB to 1 and check results
 // Busy‑spin kernel: runs for maxCycles cycles per thread
 __global__ void timedSpinKernel(int N, unsigned long long maxCycles) {
     unsigned long long start = clock64();
@@ -76,7 +77,8 @@ int main(int argc, char** argv) {
     }
 
     int totalSM = prop.multiProcessorCount;
-    int TPB      = prop.maxThreadsPerBlock;
+    //int TPB      = prop.maxThreadsPerBlock;
+    int TPB = 1;
 
     // 4) Compute cycles per pulse
     unsigned long long ticks_per_ms = static_cast<unsigned long long>(prop.clockRate);
