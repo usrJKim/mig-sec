@@ -21,6 +21,7 @@ RUN pip3 install --no-cache-dir \
 
 WORKDIR /workspace
 COPY simpleTransformer/ simpleTransformer/
+COPY simpleCNN/ simpleCNN/
 
 #ENTRYPOINT ["python3", "simpleTransformer/model.py"]
 ENTRYPOINT ["python3", "simpleCNN/model.py"]
