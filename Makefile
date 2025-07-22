@@ -9,7 +9,7 @@ MODEL_DIR=DNNmodels
 PROBER_DOCKERFILE=$(PROBER_DIR)/Dockerfile.prober
 MODEL_DOCKERFILE=$(MODEL_DIR)/Dockerfile.model
 
-.PHONY: all build clean build-prober build-model run
+.PHONY: all build clean build-prober build-model cnn trans
 
 all: build
 
@@ -24,6 +24,8 @@ build-model:
 clean:
 	sudo docker rmi -f $(PROBER_IMAGE) || true
 	sudo docker rmi -f $(MODEL_IMAGE) || true
-run:
-	./run.sh
+cnn:
+	./run_cnn.sh
+trans:
+	./run_trans.sh
 
