@@ -13,26 +13,19 @@ def get_args():
 
 args = get_args()
 if args.model == "resnet":
-    model = models.resnet18(pretrained=False)
-    #edit output layer
-    model.fc = torch.nn.Linear(model.fc.in_features, 10)
+    model = models.resnet18(pretrained=False).cuda()
 elif args.model == "vgg19":
-    model = models.vgg19(pretrained=False)
-    #edit output layer
-    model.classifier[6] = torch.nn.Linear(model.classifier[6].in_features, 10)
+    model = models.vgg19(pretrained=False).cuda()
 elif args.model == "alexnet":
-    model = models.alexnet(pretrained=False)
-    model.classifier[6] = torch.nn.Linear(model.classifier[6].in_features, 10)
+    model = models.alexnet(pretrained=False).cuda()
 elif args.model == "densenet":
-    model = models.densenet121(pretrained=False)
-    model.classifier = torch.nn.Linear(model.classifier.in_features, out_features=10)
+    model = models.densenet121(pretrained=False).cuda()
 elif args.model == "mobilenet":
-    model = models.mobilenet_v2(pretrained=False)
-    model.classifier[1] = torch.nn.Linear(in_features=1280, out_features=10)
+    model = models.mobilenet_v2(pretrained=False).cuda()
 
-# TODO pretrained=True
-
+model.eval()
 x = torch.randn(8, 3, 224, 224) #batch = 8
-output = model(x)
+with torch.no_grad():
+    output = model(x)
 print("DONE!")
 
