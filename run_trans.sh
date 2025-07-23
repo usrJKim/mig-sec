@@ -1,5 +1,5 @@
 #!/bin/bash
-# run ./run.sh model_configuration
+# run ./run_trans.sh 
 
 #====Configuration======
 PROBER_MIG_UUID="MIG_GPU-xxxxx"

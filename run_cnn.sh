@@ -1,16 +1,22 @@
 #!/bin/bash
-# run ./run.sh model_configuration
+# run ./run_cnn.sh
 
 #====Configuration======
 PROBER_MIG_UUID="MIG_GPU-xxxxx"
 MODEL_MIG_UUID="MIG_GPU-xxxxx"
-ITER_TIME=1 # repeat running model ITER_TIME times
-for ((j=1; j<=100; j++)); do
+
+MODE="train"
+BATCH=8
+EPOCH=10
+ITER=10
+
+LOOP=1 # Repeat multiple times to compensate for noise
+for ((j=1; j<=$LOOP; j++)); do
 #======================= 
-  echo "=======${j}/100 iteration========"
+  echo "=======${j}/${LOOP} iteration========"
   for MODEL in "resnet" "vgg19" "alexnet" "densenet" "mobilenet"; do
     MODEL_TYPE="${MODEL}"
-    MODEL_ARG="--model ${MODEL}"
+    MODEL_ARG="--mode ${MODE} --model ${MODEL} --batch ${BATCH} --epochs ${EPOCH} --iter ${ITER}"
       
     TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
     PROBER_OUT="${MODEL_TYPE}_${TIMESTAMP}_power.csv"
@@ -23,16 +29,14 @@ for ((j=1; j<=100; j++)); do
     
     PROBER_PID=$!
     
-    sleep 1 # wait to run prober first
+    sleep 1 # to allow the prober to start first
     
     # Run model
-    for ((i=1; i<=ITER_TIME; i++)); do
-      sudo docker run -it --rm \
-      --gpus "device=${MODEL_MIG_UUID}" \
-      model-image $MODEL_ARG
-    done
+    sudo docker run -it --rm \
+    --gpus "device=${MODEL_MIG_UUID}" \
+    model-image $MODEL_ARG
   
     sudo docker stop prober-container
-    sleep 1
+    sleep 1 # to reduce differences between models
   done
 done
