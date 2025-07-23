@@ -8,8 +8,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY prober.cpp .
+COPY prober3.cpp .
 
-RUN g++ -o prober prober.cpp -lnvidia-ml
+RUN g++ -o prober prober3.cpp -lnvidia-ml
 
 ENTRYPOINT ["./prober"]
