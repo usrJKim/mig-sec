@@ -8,7 +8,6 @@ MODEL_MIG_UUID="MIG_GPU-xxxxx"
 MODE="train"
 BATCH=8
 EPOCH=10
-ITER=10
 
 LOOP=1 # Repeat multiple times to compensate for noise
 for ((j=1; j<=$LOOP; j++)); do
@@ -16,7 +15,7 @@ for ((j=1; j<=$LOOP; j++)); do
   echo "=======${j}/${LOOP} iteration========"
   for MODEL in "resnet" "vgg19" "alexnet" "densenet" "mobilenet"; do
     MODEL_TYPE="${MODEL}"
-    MODEL_ARG="--mode ${MODE} --model ${MODEL} --batch ${BATCH} --epochs ${EPOCH} --iter ${ITER}"
+    MODEL_ARG="--mode ${MODE} --model ${MODEL} --batch ${BATCH} --epochs ${EPOCH}"
       
     TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
     PROBER_OUT="${MODEL_TYPE}_${TIMESTAMP}_power.csv"
