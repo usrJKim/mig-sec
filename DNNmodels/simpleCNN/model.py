@@ -45,7 +45,7 @@ def infer(model, batch_size):
 
 def train(model, num_epochs, num_iter, batch_size):
     #Make fake data
-    fake_dataset = FakeImageNetDataset(length=num_epochs*num_iter)
+    fake_dataset = FakeImageNetDataSet(length=num_epochs*num_iter)
     train_loader = DataLoader(fake_dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
 
     model.train()

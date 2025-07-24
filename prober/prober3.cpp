@@ -23,8 +23,18 @@ void handle_sigint(int) {
     stop_requested.store(true);
 }
 
+volatile sig_atomic_t keep_running = 1;
+
+void handle_signal(int signal){
+    keep_running = 0;
+}
+
 int main() {
-    std::signal(SIGINT, handle_sigint);
+    // std::signal(SIGINT, handle_sigint);
+
+    // 0) Signal handler
+    signal(SIGTERM, handle_signal);
+    signal(SIGINT, handle_signal);
 
     // 1) Initialize NVML and get GPU handle
     if (nvmlInit() != NVML_SUCCESS) {
@@ -62,7 +72,8 @@ int main() {
     std::vector<nvmlSample_t> buffer(bufCount);
     //bool flag = false;
     // 3) Main sampling loop
-    while (!stop_requested.load()) {
+    while (keep_running) {
+    // while (!stop_requested.load()) {
         // Drain all new samples
         bufCount = static_cast<unsigned int>(buffer.size());
         ret = nvmlDeviceGetSamples(
