@@ -17,8 +17,8 @@ for ((j=1; j<=$LOOP; j++)); do
     MODEL_TYPE="${MODEL}"
     MODEL_ARG="--mode ${MODE} --model ${MODEL} --batch ${BATCH} --epochs ${EPOCH}"
       
-    TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-    PROBER_OUT="${MODEL_TYPE}_${TIMESTAMP}_power.csv"
+    TIMESTAMP=$(date +"%m%d_%H%M")
+    PROBER_OUT="${MODEL_TYPE}_${MODE}_B${BATCH}_E${EPOCH}_${TIMESTAMP}_power.csv"
     
     # Run prober
     sudo docker run --rm --name prober-container \
@@ -33,7 +33,7 @@ for ((j=1; j<=$LOOP; j++)); do
     # Run model
     sudo docker run -it --rm \
     --gpus "device=${MODEL_MIG_UUID}" \
-    model-image $MODEL_ARG
+    cnn-image $MODEL_ARG
   
     sudo docker stop prober-container
     sleep 1 # to reduce differences between models

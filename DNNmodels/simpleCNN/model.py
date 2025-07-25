@@ -13,7 +13,7 @@ def get_args():
     parser.add_argument("--model", type=str, choices=["resnet", "vgg19", "alexnet", "densenet", "mobilenet"])
     parser.add_argument("--batch", type=int, default=8)
     parser.add_argument("--epochs", type=int, default=10)
-    parser.add_argument("--data_dir", type=str, default="./data", help="Image dir path")
+    parser.add_argument("--data_dir", type=str, default="./simpleCNN/data", help="Image dir path")
 
     return parser.parse_args()
 
@@ -56,7 +56,7 @@ def train(model, dataloader, num_epochs):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            if batch_idx % 10 == 0:
+            if batch_idx % 50 == 0:
                 print(f"Epoch: {epoch+1}, batch_idx: {batch_idx}, Loss: {loss.item():.4f}")
     
 if __name__ == "__main__":
@@ -79,12 +79,18 @@ if __name__ == "__main__":
         dataloader, num_classes = get_dataloader(args.data_dir, args.batch, mode="train")
         if args.model == "resnet":
             model = models.resnet18(weights=None).to("cuda")
+            model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
         elif args.model == "vgg19":
             model = models.vgg19(weights=None).to("cuda")
+            model.classifier[6] = torch.nn.Linear(model.classifier[6].in_features, num_classes)
         elif args.model == "alexnet":
             model = models.alexnet(weights=None).to("cuda")
+            model.classifier[6] = torch.nn.Linear(model.classifier[6].in_features, num_classes)
         elif args.model == "densenet":
             model = models.densenet121(weights=None).to("cuda")
+            model.classifier = torch.nn.Linear(model.classifier.in_features, num_classes)
         elif args.model == "mobilenet":
             model = models.mobilenet_v2(weights=None).to("cuda")
+            model.classifier[1] = torch.nn.Linear(model.classifier[1].in_features, num_classes)
+
         train(model, dataloader, args.epochs)

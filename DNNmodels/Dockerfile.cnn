@@ -1,0 +1,28 @@
+FROM nvidia/cuda:12.9.0-base-ubuntu22.04
+
+# 1) Install system tools, build essentials and CUDA toolkit, plus Python3/venv/pip
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      build-essential \
+      python3 \
+      python3-pip && \
+    rm -rf /var/lib/apt/lists/*
+
+# 2) Install the NVML Python bindings and other Python libs
+RUN pip3 install --no-cache-dir \
+      torch \
+      torchvision 
+
+RUN python3 -c "\
+import torchvision.models as models; \
+models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1); \
+models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1); \
+models.alexnet(weights=models.AlexNet_Weights.IMAGENET1K_V1); \
+models.densenet121(weights=models.DenseNet121_Weights.IMAGENET1K_V1); \
+models.mobilenet_v2(weights=models.MobileNet_V2_Weights.IMAGENET1K_V1); \
+print('✅ Weights downloaded') \
+"
+WORKDIR /workspace
+COPY simpleCNN/ simpleCNN/
+
+ENTRYPOINT ["python3", "simpleCNN/model.py"]

@@ -1,0 +1,30 @@
+FROM nvidia/cuda:12.9.0-base-ubuntu22.04
+
+# 1) Install system tools, build essentials and CUDA toolkit, plus Python3/venv/pip
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      build-essential \
+      python3 \
+      python3-pip && \
+    rm -rf /var/lib/apt/lists/*
+
+# 2) Install the NVML Python bindings and other Python libs
+RUN pip3 install --no-cache-dir \
+      torch \
+      vllm \
+      "huggingface_hub[cli]"
+
+ENV HF_HUB_ENABLE_HF_TRANSFER=1
+ENV TRANSFORMERS_OFFLINE=1
+
+RUN huggingface-cli download mistralai/Mistral-7B-Instruct-v0.1 --local-dir /models/mistral-7b --local-dir-use-symlinks False && \
+    huggingface-cli download TinyLlama/TinyLlama-1.1B-Chat-v1.0 --local-dir /models/tinyllama --local-dir-use-symlinks False && \
+    huggingface-cli download microsoft/phi-2 --local-dir /models/phi-2 --local-dir-use-symlinks False && \
+    huggingface-cli download google/gemma-2b-it --local-dir /models/gemma-2b-it --local-dir-use-symlinks False
+
+ENV HF_HOME=/models
+
+WORKDIR /workspace
+COPY simpleTransformer/ simpleTransformer/
+
+ENTRYPOINT ["python3", "simpleTransformer/model.py"]

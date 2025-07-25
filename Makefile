@@ -1,5 +1,6 @@
 PROBER_IMAGE=prober-image
-MODEL_IMAGE=model-image
+CNN_IMAGE=cnn-image
+LLM_IMAGE=llm-image
 TEST_IMAGE=test-image
 
 #dir
@@ -8,20 +9,24 @@ MODEL_DIR=DNNmodels
 
 #docker files
 PROBER_DOCKERFILE=$(PROBER_DIR)/Dockerfile.prober
-MODEL_DOCKERFILE=$(MODEL_DIR)/Dockerfile.model
+CNN_DOCKERFILE=$(MODEL_DIR)/Dockerfile.model
+LLM_DOCKERFILE=$(MODEL_DIR)/Dockerfile.model
 TEST_DOCKERFILE=$(MODEL_DIR)/Dockerfile.test
 
 .PHONY: all build clean build-prober build-model build-test cnn trans
 
 all: build
 
-build: build-prober build-model
+build: build-prober build-cnn build-llm
 
 build-prober:
 	sudo docker build -f $(PROBER_DOCKERFILE) -t $(PROBER_IMAGE) $(PROBER_DIR)
 
-build-model:
-	sudo docker build -f $(MODEL_DOCKERFILE) -t $(MODEL_IMAGE) $(MODEL_DIR)
+build-cnn:
+	sudo docker build -f $(CNN_DOCKERFILE) -t $(CNN_IMAGE) $(MODEL_DIR)
+
+build-llm:
+	sudo docker build -f $(LLM_DOCKERFILE) -t $(LLM_IMAGE) $(MODEL_DIR)
 
 build-test:
 	sudo docker build -f $(TEST_DOCKERFILE) -t $(TEST_IMAGE) $(MODEL_DIR)
