@@ -24,9 +24,13 @@ build-prober:
 
 build-cnn:
 	sudo docker build -f $(CNN_DOCKERFILE) -t $(CNN_IMAGE) $(MODEL_DIR)
+	chmod +x ./run_cnn.sh
 
 build-llm:
-	sudo docker build -f $(LLM_DOCKERFILE) -t $(LLM_IMAGE) $(MODEL_DIR)
+	chmod +x ./DNNmodels/simpleTransformer/llm_models/install_models.sh
+	./DNNmodels/simpleTransformer/llm_models/install_models.sh
+	sudo docker build --build-arg HF_TOKEN=${cat huggingface/token} -f $(LLM_DOCKERFILE) -t $(LLM_IMAGE) $(MODEL_DIR)
+	chmod +x ./run_trans.sh
 
 build-test:
 	sudo docker build -f $(TEST_DOCKERFILE) -t $(TEST_IMAGE) $(MODEL_DIR)

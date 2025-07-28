@@ -69,19 +69,26 @@ if __name__ == '__main__':
     args = get_args()
 
     if args.model == "Mistral":
-        model_name = "mistralai/Mistral-7B-Instruct-v0.1"
+        model_name = "simpleTransformer/llm_models/Mistral-7B-Instruct-v0.1/"
     elif args.model == "TinyLlama":
-        model_name = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+        model_name = "simpleTransformer/llm_models/TinyLlama-1.1B-Chat-v1.0/"
     elif args.model == "Phi-2":
-        model_name = "miscrosoft/phi-2"
+        model_name = "simpleTransformer/llm_models/phi-2"
     elif args.model == "Gemma":
-        model_name = "google/gemma-2b-it"
+        model_name = "simpleTransformer/llm_models/gemma-2b-it"
 
     # Initialize vllm engine
     try:
-        llm = LLM(model=model_name)
+        llm = LLM(
+                model="/models/mistral-7b",
+                dtype="float16",                      
+                enforce_eager=True,                   
+                trust_remote_code=True,
+                )
+
     except Exception as e:
         print(f"LLM init error: {e}")
         exit()
 
+    Generate(llm)
     

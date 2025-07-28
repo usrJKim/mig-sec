@@ -78,19 +78,20 @@ if __name__ == "__main__":
     elif args.mode == "train":
         dataloader, num_classes = get_dataloader(args.data_dir, args.batch, mode="train")
         if args.model == "resnet":
-            model = models.resnet18(weights=None).to("cuda")
+            model = models.resnet18(weights=None)
             model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
         elif args.model == "vgg19":
-            model = models.vgg19(weights=None).to("cuda")
+            model = models.vgg19(weights=None)
             model.classifier[6] = torch.nn.Linear(model.classifier[6].in_features, num_classes)
         elif args.model == "alexnet":
-            model = models.alexnet(weights=None).to("cuda")
+            model = models.alexnet(weights=None)
             model.classifier[6] = torch.nn.Linear(model.classifier[6].in_features, num_classes)
         elif args.model == "densenet":
-            model = models.densenet121(weights=None).to("cuda")
+            model = models.densenet121(weights=None)
             model.classifier = torch.nn.Linear(model.classifier.in_features, num_classes)
         elif args.model == "mobilenet":
-            model = models.mobilenet_v2(weights=None).to("cuda")
+            model = models.mobilenet_v2(weights=None)
             model.classifier[1] = torch.nn.Linear(model.classifier[1].in_features, num_classes)
+        model = model.to("cuda")
 
         train(model, dataloader, args.epochs)
