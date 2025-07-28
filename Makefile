@@ -9,8 +9,8 @@ MODEL_DIR=DNNmodels
 
 #docker files
 PROBER_DOCKERFILE=$(PROBER_DIR)/Dockerfile.prober
-CNN_DOCKERFILE=$(MODEL_DIR)/Dockerfile.model
-LLM_DOCKERFILE=$(MODEL_DIR)/Dockerfile.model
+CNN_DOCKERFILE=$(MODEL_DIR)/Dockerfile.cnn
+LLM_DOCKERFILE=$(MODEL_DIR)/Dockerfile.llm
 TEST_DOCKERFILE=$(MODEL_DIR)/Dockerfile.test
 
 .PHONY: all build clean build-prober build-model build-test cnn trans
@@ -26,7 +26,7 @@ build-cnn:
 	sudo docker build -f $(CNN_DOCKERFILE) -t $(CNN_IMAGE) $(MODEL_DIR)
 
 build-llm:
-	sudo docker build -f $(LLM_DOCKERFILE) -t $(LLM_IMAGE) $(MODEL_DIR)
+	sudo docker build --build-arg HF_TOKEN=hf_xxxxxxx -f $(LLM_DOCKERFILE) -t $(LLM_IMAGE) $(MODEL_DIR)
 
 build-test:
 	sudo docker build -f $(TEST_DOCKERFILE) -t $(TEST_IMAGE) $(MODEL_DIR)
