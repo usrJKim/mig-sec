@@ -12,10 +12,12 @@ RUN apt-get update && \
 RUN pip3 install --no-cache-dir \
       torch \
       vllm \
+      hf_transfer \
       "huggingface_hub[cli]"
 
-ARG HF_TOKEN
-ENV HUGGINGFACE_TOKEN=$HF_TOKEN
+COPY huggingface/ token/
+ENV HF_TOKEN=${cat token/token}
+RUN python3 -c "from huggingface_hub import login; login('${HF_TOKEN}', add_to_git_credential=False)"
 
 RUN echo "$HUGGINGFACE_TOKEN" | hf login --token
 

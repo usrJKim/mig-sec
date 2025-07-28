@@ -26,7 +26,7 @@ build-cnn:
 	sudo docker build -f $(CNN_DOCKERFILE) -t $(CNN_IMAGE) $(MODEL_DIR)
 
 build-llm:
-	sudo docker build --build-arg HF_TOKEN=hf_xxxxxxx -f $(LLM_DOCKERFILE) -t $(LLM_IMAGE) $(MODEL_DIR)
+	sudo docker build -f $(LLM_DOCKERFILE) -t $(LLM_IMAGE) $(MODEL_DIR)
 
 build-test:
 	sudo docker build -f $(TEST_DOCKERFILE) -t $(TEST_IMAGE) $(MODEL_DIR)
