@@ -14,13 +14,18 @@ RUN pip3 install --no-cache-dir \
       vllm \
       "huggingface_hub[cli]"
 
-ENV HF_HUB_ENABLE_HF_TRANSFER=1
-ENV TRANSFORMERS_OFFLINE=1
+ARG HF_TOKEN
+ENV HUGGINGFACE_TOKEN=$HF_TOKEN
 
-RUN huggingface-cli download mistralai/Mistral-7B-Instruct-v0.1 --local-dir /models/mistral-7b --local-dir-use-symlinks False && \
-    huggingface-cli download TinyLlama/TinyLlama-1.1B-Chat-v1.0 --local-dir /models/tinyllama --local-dir-use-symlinks False && \
-    huggingface-cli download microsoft/phi-2 --local-dir /models/phi-2 --local-dir-use-symlinks False && \
-    huggingface-cli download google/gemma-2b-it --local-dir /models/gemma-2b-it --local-dir-use-symlinks False
+RUN echo "$HUGGINGFACE_TOKEN" | hf login --token
+
+
+ENV HF_HUB_ENABLE_HF_TRANSFER=1
+
+RUN hf download mistralai/Mistral-7B-Instruct-v0.1 --local-dir /models/mistral-7b && \
+    hf download TinyLlama/TinyLlama-1.1B-Chat-v1.0 --local-dir /models/tinyllama  && \
+    hf download microsoft/phi-2 --local-dir /models/phi-2 && \
+    hf download google/gemma-2b-it --local-dir /models/gemma-2b-it
 
 ENV HF_HOME=/models
 
