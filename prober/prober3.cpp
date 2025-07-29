@@ -23,7 +23,13 @@ void handle_sigint(int) {
     stop_requested.store(true);
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " <output_csv_path>\n";
+        return 1;
+    }
+    std::string output_path = argv[1];
+
     std::signal(SIGINT, handle_sigint);
     std::signal(SIGTERM, handle_sigint);
 
@@ -105,7 +111,7 @@ int main() {
     }
 
     // 6) Stream the filled 1 ms grid to CSV
-    std::ofstream out("power_data.csv");
+    std::ofstream out(output_path);
     out << "time_ms,power_w\n";
 
     long long t_start = samples.front().first;  // == 0 after offset
@@ -121,7 +127,7 @@ int main() {
         out << t << ',' << p << '\n';
     }
 
-    std::cout << "Wrote filled data to power_data.csv ("
+    std::cout << "Wrote filled data to "<<output_path<< "("
               << (t_end - t_start + 1) << " rows)\n";
     return 0;
 }

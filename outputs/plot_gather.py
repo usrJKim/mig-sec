@@ -7,7 +7,7 @@ def get_args():
     parser = argparse.ArgumentParser()
 
     # Input
-    parser.add_argument("--gpu", type=str, choices=["h100","a100"])
+    parser.add_argument("--gpu", type=str, choices=["h100","a100", "h100_new"])
     parser.add_argument("--mig", type=str, choices=["mig1g","mig2g","mig3g","mig4g"])
     return parser.parse_args()
 

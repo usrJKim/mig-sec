@@ -7,7 +7,7 @@ MODEL_MIG_UUID="MIG_GPU-xxxxx"
 
 MODE="train"
 BATCH=8
-EPOCH=2
+EPOCH=1
 
 LOOP=1 # Repeat multiple times to compensate for noise
 for ((j=1; j<=$LOOP; j++)); do
