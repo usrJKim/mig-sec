@@ -29,7 +29,7 @@ build-cnn:
 build-llm:
 	chmod +x ./DNNmodels/simpleTransformer/llm_models/install_models.sh
 	./DNNmodels/simpleTransformer/llm_models/install_models.sh
-	sudo docker build --build-arg HF_TOKEN=${cat huggingface/token} -f $(LLM_DOCKERFILE) -t $(LLM_IMAGE) $(MODEL_DIR)
+	sudo docker build -f $(LLM_DOCKERFILE) -t $(LLM_IMAGE) $(MODEL_DIR)
 	chmod +x ./run_trans.sh
 
 build-test:

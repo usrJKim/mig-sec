@@ -8,7 +8,7 @@ ITER_TIME=3 # repeat running model ITER_TIME times
 LOOP=1
 
 for ((j=1;j<=$LOOP;j++)); do
-  for MODEL in "Mistral" "TinyLlama" "Phi-2" "Gemma"; do
+  for MODEL in "Llama" "TinyLlama" "Phi-2" "Gemma"; do
     MODEL_ARGS="--model ${MODEL}"
   #======================= 
     MODEL_TYPE="${MODEL}"

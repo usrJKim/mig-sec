@@ -1,0 +1,2 @@
+model: 1g.10gb
+prober: 1g.10gb

@@ -8,7 +8,7 @@ def get_args():
     parser.add_argument("--model",
                         type=str,
                         choices=[
-                             "Mistral",
+                             "Llama"
                              "TinyLlama",
                              "Phi-2",
                              "Gemma"
@@ -68,10 +68,10 @@ def Generate(llm):
 if __name__ == '__main__':
     args = get_args()
 
-    if args.model == "Mistral":
-        model_name = "simpleTransformer/llm_models/Mistral-7B-Instruct-v0.1/"
-    elif args.model == "TinyLlama":
-        model_name = "simpleTransformer/llm_models/TinyLlama-1.1B-Chat-v1.0/"
+    if args.model == "TinyLlama":
+        model_name = "simpleTransformer/llm_models/TinyLlama-1.1B-Chat-v1.0"
+    elif args.model =="Llama":
+        model_name = "simpleTransformer/llm_models/Meta-Llama-3-8B-Instruct"
     elif args.model == "Phi-2":
         model_name = "simpleTransformer/llm_models/phi-2"
     elif args.model == "Gemma":
@@ -80,10 +80,7 @@ if __name__ == '__main__':
     # Initialize vllm engine
     try:
         llm = LLM(
-                model="/models/mistral-7b",
-                dtype="float16",                      
-                enforce_eager=True,                   
-                trust_remote_code=True,
+                model=model_name,
                 )
 
     except Exception as e:

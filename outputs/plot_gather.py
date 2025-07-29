@@ -13,8 +13,8 @@ def labelling(file):
         return 'DenseNet121'
     elif 'mobilenet' in file:
         return 'MobileNet_V2'
-    elif 'mistral' in file:
-        return "Mistral-7B-Instruct"
+    elif 'Llama' in file:
+        return "Meta-Llama-3-8B-Instruct"
     elif 'tinyllama' in file:
         return 'TinyLlama-1.1B-Chat'
     elif 'phi-2' in file:
