@@ -1,22 +1,7 @@
+#!/bin/bash
 sudo nvidia-smi -pm 1
 sudo nvidia-smi -i 0 -mig 1
 nvidia-smi mig -i 0 -lgip
 sudo nvidia-smi mig -cgi 1g.10gb,1g.10gb -C
-
-
+# sudo nvidia-smi mig -cgi 1g.10gb,1g.10gb -C
 nvidia-smi -L
-
-
-
-https://www.scaleway.com/en/docs/gpu/how-to/use-nvidia-mig-technology/
-
-
-https://forums.developer.nvidia.com/t/how-to-use-cuda-visible-devices-for-mig-instances/195069/3
-
-
-MIG-d67ba5b2-f68f-5511-9df4-830391efc7d1
-MIG-c4d67064-7c5c-55d6-b319-b4f106f91a63
-
-Must do!!!!
-sudo chown -R $(whoami) outputs/
-
