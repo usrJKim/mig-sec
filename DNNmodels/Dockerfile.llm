@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.9.0-runtime-ubuntu22.04
+FROM nvidia/cuda:12.9.0-devel-ubuntu22.04
 
 # 1) Install system tools, build essentials and CUDA toolkit, plus Python3/venv/pip
 RUN apt-get update && \
@@ -17,10 +17,12 @@ RUN apt-get update && \
 RUN pip install --upgrade pip setuptools wheel packaging ninja
 
 RUN pip3 install --no-cache-dir \
-      flash-attn==2.4.2 \
       torch==2.1.2 \
       numpy==1.26.4 \
       vllm 
+
+RUN pip3 install --no-cache-dir \
+      flash-attn==2.4.2 
 
 WORKDIR /workspace
 COPY simpleTransformer/ simpleTransformer/

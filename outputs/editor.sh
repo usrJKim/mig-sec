@@ -1,12 +1,9 @@
 #!/bin/bash
-searchdir=`ls ./prober/`
-for entry in $searchdir
-do
-  filename=${entry%.*}
-  # head -n 1 "./prober/${entry}" > "./editted/${entry}"
-  head -n 50000 "./prober/${entry}" > "./editted/${entry}"
-  # tail -n 20000 "./prober/${entry}" >> "./editted/${entry}"
+for GPU in "h100" "a100"; do
+  for MIG in "mig1g" "mig2g" "mig3g" "mig4g"; do
+    searchdir=`ls ./prober/$GPU/$MIG/`
+    for entry in $searchdir; do
+      head -n 25000 "./prober/${GPU}/${MIG}/${entry}" > "./editted/${GPU}/${MIG}/${entry}"
+    done
+  done
 done
-  rm ./editted/*renew*
-  rm ./editted/test_power.csv
-

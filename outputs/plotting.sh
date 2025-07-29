@@ -1,8 +1,8 @@
 #!/bin/bash
-
-searchdir=`ls ./editted/`
-for entry in $searchdir
+for GPU in "h100" "a100"
 do
-  filename=${entry%.*}
-  python3 plot.py -i "./editted/${entry}" -o "./image_editted/${filename}"
+  for MIG in "mig1g" "mig2g" "mig3g" "mig4g"
+  do
+    python3 plot_gather.py --gpu $GPU --mig $MIG
+  done
 done

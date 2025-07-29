@@ -1,0 +1,2 @@
+model: mig4g.40gb
+prober: mig1g.10gb
