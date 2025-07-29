@@ -1,5 +1,6 @@
 #!/bin/bash
 sudo apt install git-lfs
+git lfs install
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
