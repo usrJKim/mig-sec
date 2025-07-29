@@ -8,7 +8,7 @@ def get_args():
     parser.add_argument("--model",
                         type=str,
                         choices=[
-                             "Llama"
+                             "Llama",
                              "TinyLlama",
                              "Phi-2",
                              "Gemma"
@@ -56,6 +56,7 @@ def Generate(llm):
         exit()
     print("DONE")
 
+    """
     for output in outputs:
         prompt = output.prompt
         generated_text = output.outputs[0].text
@@ -63,6 +64,7 @@ def Generate(llm):
         print(f"prompt: {prompt!r}")
         print(f"generated: {generated_text!r}")
         print("-"*20)
+    """
 
 
 if __name__ == '__main__':
@@ -87,5 +89,6 @@ if __name__ == '__main__':
         print(f"LLM init error: {e}")
         exit()
 
-    Generate(llm)
+    for _ in range(10):
+        Generate(llm)
     
