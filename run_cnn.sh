@@ -5,7 +5,7 @@
 PROBER_MIG_UUID="MIG_GPU-xxxxx"
 MODEL_MIG_UUID="MIG_GPU-xxxxx"
 
-MODE="train"
+MODE="infer"
 BATCH=8
 EPOCH=1
 

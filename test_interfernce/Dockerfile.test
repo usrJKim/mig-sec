@@ -1,0 +1,17 @@
+FROM nvidia/cuda:12.1.0-base-ubuntu22.04
+
+# 1) Install system tools, build essentials and CUDA toolkit, plus Python3/venv/pip
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      build-essential \
+      nvidia-cuda-toolkit && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+COPY test-hammer.cu .
+COPY input_sequence .
+RUN   nvcc -o test test-hammer.cu -lcudart
+ENTRYPOINT ["./test", "100", "100", "input_sequence.csv"]
+
+

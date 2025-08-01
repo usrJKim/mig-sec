@@ -37,7 +37,7 @@ def infer(model, dataloader):
             outputs = model(inputs)
             pred = outputs.argmax(dim=1)
             print(f"Batch {idx+1}: Predicted labels = {pred.tolist()}")
-            if idx >= 10: #infer only 10 batches
+            if idx >= 50: #infer only 50 batches
                 break
     print("DONE!")
 

@@ -12,4 +12,4 @@ COPY prober3.cpp .
 
 RUN g++ -o prober3 prober3.cpp -lnvidia-ml
 
-ENTRYPOINT ["./prober"]
+ENTRYPOINT ["./prober3"]

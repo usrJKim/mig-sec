@@ -77,8 +77,7 @@ int main(int argc, char** argv) {
     }
 
     int totalSM = prop.multiProcessorCount;
-    //int TPB      = prop.maxThreadsPerBlock;
-    int TPB = 1;
+    int TPB      = prop.maxThreadsPerBlock;
 
     // 4) Compute cycles per pulse
     unsigned long long ticks_per_ms = static_cast<unsigned long long>(prop.clockRate);

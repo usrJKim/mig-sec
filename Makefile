@@ -2,7 +2,6 @@ PROBER_IMAGE=prober-image
 CNN_IMAGE=cnn-image
 LLM_IMAGE=llm-image
 TEST_IMAGE=test-image
-
 #dir
 PROBER_DIR=prober
 MODEL_DIR=DNNmodels

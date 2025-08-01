@@ -1,0 +1,11 @@
+FROM pytorch/pytorch:2.4.0-cuda12.1-cudnn9-runtime
+
+RUN pip install --no-cache-dir \
+    torchvision==0.17.0 \
+    numpy==1.26.4 \
+    requests \
+    pillow
+
+WORKDIR /app
+COPY resnet.py .
+COPY image/ ./image/

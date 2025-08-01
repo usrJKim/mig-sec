@@ -1,2 +1,0 @@
-model: 3g.20gb
-prober: 1g.10gb
