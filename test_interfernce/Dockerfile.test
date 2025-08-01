@@ -10,7 +10,7 @@ RUN apt-get update && \
 WORKDIR /workspace
 
 COPY test-hammer.cu .
-COPY input_sequence .
+COPY input_sequence.csv .
 RUN   nvcc -o test test-hammer.cu -lcudart
 ENTRYPOINT ["./test", "100", "100", "input_sequence.csv"]
 

@@ -1,0 +1,14 @@
+Image 'n01768244_0.JPEG' preprocessed in 0.005232s (loading) + 0.003024s (transforming) = 0.008257s
+Image 'n01768244_1.JPEG' preprocessed in 0.000304s (loading) + 0.003073s (transforming) = 0.003377s
+Image 'n01768244_10.JPEG' preprocessed in 0.000261s (loading) + 0.002838s (transforming) = 0.003098s
+Image 'n01768244_100.JPEG' preprocessed in 0.000250s (loading) + 0.008950s (transforming) = 0.009200s
+Image 'n01768244_101.JPEG' preprocessed in 0.000244s (loading) + 0.000898s (transforming) = 0.001142s
+Image 'n01768244_102.JPEG' preprocessed in 0.000261s (loading) + 0.000901s (transforming) = 0.001162s
+Image 'n01768244_103.JPEG' preprocessed in 0.000231s (loading) + 0.000895s (transforming) = 0.001126s
+Image 'n01768244_104.JPEG' preprocessed in 0.000259s (loading) + 0.000926s (transforming) = 0.001184s
+Image 'n01768244_105.JPEG' preprocessed in 0.000242s (loading) + 0.000879s (transforming) = 0.001122s
+Image 'n01768244_106.JPEG' preprocessed in 0.000235s (loading) + 0.000985s (transforming) = 0.001220s
+
+Total preprocessing time for 10 image(s): 0.03 seconds.
+Total inference time for 10 image(s): 0.76 seconds.
+

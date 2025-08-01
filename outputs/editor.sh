@@ -1,8 +1,9 @@
 #!/bin/bash
-LOWER=15000
-LINE=10000
+LOWER=2
+LINE=1000000
 for GPU in "h100" "a100"; do
   for MIG in "mig1g" "mig2g" "mig3g" "mig4g"; do
+    rm editted/$GPU/$MIG/*
     searchdir=`ls ./prober/$GPU/$MIG/`
     for entry in $searchdir; do
       LINES=$(wc -l < "./prober/${GPU}/${MIG}/${entry}")
