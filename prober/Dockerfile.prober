@@ -8,8 +8,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY prober3.cpp .
+COPY prober_cpu_time.cpp .
 
-RUN g++ -o prober3 prober3.cpp -lnvidia-ml
+RUN g++ -o prober prober_cpu_time.cpp -lnvidia-ml
 
-ENTRYPOINT ["./prober3"]
+ENTRYPOINT ["./prober"]

@@ -57,6 +57,7 @@ def main():
     plt.xlabel("Time (s)")
     plt.ylabel("Power (W)")
     plt.title(f"GPU Power Over Time\n(red markers show drops >80→<70 W)\n{args.input}")
+    plt.grid(True)
     plt.legend()
     plt.tight_layout()
     plt.savefig(args.output, dpi=300)

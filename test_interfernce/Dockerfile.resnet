@@ -5,7 +5,10 @@ RUN pip install --no-cache-dir \
     numpy==1.26.4 \
     requests \
     pillow
-
+RUN mkdir -p /root/.cache/torch/hub/checkpoints
+RUN python3 -c "\
+import torchvision.models as models; \
+models.resnet152(weights=models.ResNet152_Weights.DEFAULT)"
 WORKDIR /app
 COPY resnet.py .
 COPY image/ ./image/

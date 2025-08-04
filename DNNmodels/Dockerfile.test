@@ -9,9 +9,9 @@ RUN apt-get update && \
 
 WORKDIR /workspace
 
-COPY test4.cu .
+COPY test_cpu_time.cu .
 COPY input_files/ input_files/
-RUN   nvcc -o test4 test4.cu -lcudart
-ENTRYPOINT ["./test4", "100", "100", "input_files/sequence.csv"]
+RUN   nvcc -o test testi_cpu_time.cu -lcudart
+ENTRYPOINT ["./test", "100", "100", "input_files/sequence.csv"]
 
 
