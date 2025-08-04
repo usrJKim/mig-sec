@@ -6,6 +6,7 @@ PROBER_MIG_UUID="MIG_GPU-xxxxx"
 MODEL_MIG_UUID="MIG_GPU-xxxxx"
 #======================= 
 PROBER_OUT="test_power.csv"
+TEST_OUT="test_out.csv"
 
 # Run prober
 sudo docker run --rm --name prober-container \
@@ -18,8 +19,9 @@ PROBER_PID=$!
 sleep 1 # wait to run prober first
 
 #RUN test
-  sudo docker run -it --rm \
-  --gpus "device=${MODEL_MIG_UUID}" \
-  test-image
+sudo docker run -it --rm \
+--gpus "device=${MODEL_MIG_UUID}" \
+-v $(pwd)/outputs:/outputs \
+test-image /outputs/prober/${TEST_OUT}
 
 sudo docker stop prober-container
