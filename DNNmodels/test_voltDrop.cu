@@ -10,7 +10,7 @@
 
 //TODO set TPB to 1 and check results
 // Busy‑spin kernel: runs for maxCycles cycles per thread
-__global__ void timedSpinKernel(int N, unsigned long long maxCycles) {
+__global__ void timedSpinKernel_sharedMem(int N, unsigned long long maxCycles) {
     __shared__ float smem[10000];
     unsigned long long start = clock64();
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -23,13 +23,49 @@ __global__ void timedSpinKernel(int N, unsigned long long maxCycles) {
         val = val * __sinf(val) + __expf(val);
     }
 }
-
+__global__ void timedSpinKernel_GEMV(int N, const float* A, const float* x, float* y, int rows, int cols, unsigned long long maxCycles) {
+    //rows should be equal to N
+    unsigned long long start = clock64();
+    int row = blockIdx.x * blockDim.x + threadIdx.x;
+    if (row >= N) return;
+    float sum = 0.0f;
+    int j = 0;
+    while ((clock64() - start < maxCycles)&& j < cols) {
+        sum += A[row * cols +j ] * x[j]
+        // some non‑trivial work to hold the SM busy
+    }
+    y[row] = sum;
+}
+__global__ void timedSpinKernel_fp(int N, unsigned long long maxCycles) {
+    unsigned long long start = clock64();
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx >= N) return;
+    float val = idx*1.0;
+    while (clock64() - start < maxCycles) {
+        // some non‑trivial work to hold the SM busy
+        val *= val;
+    }
+}
+__global__ void timedSpinKernel_SFU(int N, unsigned long long maxCycles) {
+    //Run special function units
+    unsigned long long start = clock64();
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx >= N) return;
+    float val = idx * 1.0;
+    while (clock64() - start < maxCycles) {
+        // some non‑trivial work to hold the SM busy
+        val = sinf(x)+expf(x)*sqrtf(x);
+    }
+}
 // Empty kernel to bump clocks (or hold SM busy very lightly)
 __global__ void emptyKernel() { }
 
 // Launch helper: grid of (blocks × TPB) threads, all spinning
-void launchPulse(int N, unsigned long long maxCycles, int blocks, int TPB) {
-    timedSpinKernel<<<blocks, TPB>>>(N, maxCycles);
+void launchPulse(int N, const float*A, const float* x, float* y, unsigned long long maxCycles, int blocks, int TPB) {
+    // timedSpinKernel_sharedMem<<<blocks, TPB>>>(N, maxCycles);
+    timedSpinKernel_GEMV<<<blocks, TPB>>>(N, A, x, y, N, N, maxCycles);
+    // timedSpinKernel_fp<<<blocks, TPB>>>(N, maxCycles);
+    // timedSpinKernel_SFU<<<blocks, TPB>>>(N, maxCycles);
     cudaDeviceSynchronize();
 }
 
@@ -121,12 +157,22 @@ int main(int argc, char** argv) {
                 std::chrono::milliseconds(delay_ms)
             );
         } else {
+
+            int N = v * TPB;
+            float *d_A, *d_x, *d_y;
+            cudaMalloc(&d_A,sizeof(float)*N*N);
+            cudaMalloc(&d_x,sizeof(float)*N);
+            cudaMalloc(&d_y,sizeof(float)*N);
+            cudaMemset(d_A, 2, sizeof(float)*N*N); //for avoding compiler optimization
+            cudaMemset(d_x, 3, sizeof(float)*N); //for avoding compiler optimization
+            cudaMemset(d_y, 0, sizeof(float)*N); //for avoding compiler optimization
+
             // active slot: launch the busy‑spin pulse
-            launchPulse(v * TPB, maxCycles/5, v, TPB);
-            launchPulse(v * TPB, maxCycles/5, v, TPB);
-            launchPulse(v * TPB, maxCycles/5, v, TPB);
-            launchPulse(v * TPB, maxCycles/5, v, TPB);
-            launchPulse(v * TPB, maxCycles/5, v, TPB);
+            launchPulse(v * TPB, d_A, d_x, d_y, maxCycles/5, v, TPB);
+            launchPulse(v * TPB, d_A, d_x, d_y, maxCycles/5, v, TPB);
+            launchPulse(v * TPB, d_A, d_x, d_y, maxCycles/5, v, TPB);
+            launchPulse(v * TPB, d_A, d_x, d_y, maxCycles/5, v, TPB);
+            launchPulse(v * TPB, d_A, d_x, d_y, maxCycles/5, v, TPB);
             std::thread reset_thread([](){
                 // destroys current CUDA context
                 cudaDeviceReset();

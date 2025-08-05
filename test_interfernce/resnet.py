@@ -11,7 +11,7 @@ from PIL import Image
 import requests
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
+# os.environ["CUDA_VISIBLE_DEVICES"] = ""
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".gif"}
 
 def load_model_and_weights(name: str, device: torch.device):
@@ -84,7 +84,7 @@ def main():
                         help="Number of top predictions to show")
     args = parser.parse_args()
 
-    device = "cpu" #torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model, weights = load_model_and_weights(args.model, device)
     labels = load_labels()
 

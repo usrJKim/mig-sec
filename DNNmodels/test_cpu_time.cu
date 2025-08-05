@@ -37,7 +37,7 @@ std::string getCurrentTimeString(){
     using namespace std::chrono;
     auto now = system_clock::now();
     auto in_time_t = system_clock::to_time_t(now);
-    audo ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
+    auto ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
 
     std::ostringstream ss;
     ss << std::put_time(std::localtime(&in_time_t), "%H:%M:%S")
