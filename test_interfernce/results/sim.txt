@@ -1,5 +1,0 @@
-Total preprocessing time for 10 image(s): 0.40 seconds.
-Total inference time for 10 image(s): 76.07 seconds.
-
-Total preprocessing time for 10 image(s): 0.40 seconds.
-Total inference time for 10 image(s): 76.65 seconds.
