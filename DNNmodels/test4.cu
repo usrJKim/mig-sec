@@ -14,11 +14,11 @@ __global__ void timedSpinKernel(int N, unsigned long long maxCycles) {
     unsigned long long start = clock64();
     double idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx >= N) return;
-
+    float val = idx * 1.0;
     while (clock64() - start < maxCycles) {
         // some non‑trivial work to hold the SM busy
         //idx = idx * __sinf(idx) + __expf(idx);
-        idx += idx;
+        val = sinf(val)+cosf(val)*sqrtf(val);
     }
 }
 
