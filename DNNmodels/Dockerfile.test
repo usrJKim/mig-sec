@@ -11,6 +11,6 @@ WORKDIR /workspace
 COPY test4.cu .
 COPY input_files/ input_files/
 RUN   nvcc -o test test4.cu -lcudart
-ENTRYPOINT ["./test", "100", "100", "/input_files/mig1g/lables1bit.csv"]
+ENTRYPOINT ["./test", "100", "100"]
 
 

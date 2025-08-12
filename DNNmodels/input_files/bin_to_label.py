@@ -27,7 +27,7 @@ def create_label_files(bin_file_path, output_dir, bits_list, num_sm):
                 decimal_value = int(chunk, 2)
                 encoded_value = encode_label(decimal_value, num_sm, bits)
                 labels.append(encoded_value)
-        output_file_path = os.path.join(output_dir, f'lables{bits}bit.csv')
+        output_file_path = os.path.join(output_dir, f'labels{bits}bit.csv')
         header = list(range(0,num_sm+1))
         with open(output_file_path, 'w')as f:
             f.write(','.join(map(str, header)))
