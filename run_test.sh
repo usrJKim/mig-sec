@@ -21,7 +21,6 @@ sleep 1 # wait to run prober first
 #RUN test
 sudo docker run -it --rm \
 --gpus "device=${MODEL_MIG_UUID}" \
--v $(pwd)/outputs:/outputs \
-test-image /outputs/prober/${TEST_OUT}
+test-image
 
 sudo docker stop prober-container
