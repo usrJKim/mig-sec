@@ -23,7 +23,8 @@ void handle_sigint(int) {
     stop_requested.store(true);
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    std::string output_path = argv[1];
     std::signal(SIGINT, handle_sigint);
 
     // 1) Initialize NVML and get GPU handle
@@ -103,7 +104,7 @@ int main() {
     }
 
     // 6) Stream the filled 1 ms grid to CSV (now including temp_C)
-    std::ofstream out("power_data.csv");
+    std::ofstream out(output_path);
     out << "time_ms,power_w,temp_C\n";
 
     long long t_start = std::get<0>(samples.front());  // == 0 after offset
