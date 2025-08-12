@@ -26,6 +26,7 @@ void handle_sigint(int) {
 int main(int argc, char* argv[]) {
     std::string output_path = argv[1];
     std::signal(SIGINT, handle_sigint);
+    std::signal(SIGTERM, handle_sigint);
 
     // 1) Initialize NVML and get GPU handle
     if (nvmlInit() != NVML_SUCCESS) {
