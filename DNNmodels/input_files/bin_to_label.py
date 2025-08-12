@@ -28,8 +28,10 @@ def create_label_files(bin_file_path, output_dir, bits_list, num_sm):
                 encoded_value = encode_label(decimal_value, num_sm, bits)
                 labels.append(encoded_value)
         output_file_path = os.path.join(output_dir, f'lables{bits}bit.csv')
+        header = list(range(0,num_sm+1))
         with open(output_file_path, 'w')as f:
-            f.write('header\n')
+            f.write(','.join(map(str, header)))
+            f.write('\n')
             f.write(','.join(map(str,labels)))
 
 parser = argparse.ArgumentParser(
