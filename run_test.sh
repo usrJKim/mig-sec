@@ -23,7 +23,7 @@ for ITER in 1 2 3 4 5 6 7 8 9 10; do
   #RUN test
   sudo docker run -it --rm \
   --gpus "device=${MODEL_MIG_UUID}" \
-  test-image "/input_files/mig${MIG}g/labels${BIT}bit.csv"
+  test-image "input_files/mig${MIG}g/labels${BIT}bit.csv"
   
   sudo docker stop prober-container
 done
