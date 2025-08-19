@@ -1,4 +1,3 @@
-import os
 import argparse
 
 def txt_to_bin(input_file_path, output_file_path):

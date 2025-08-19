@@ -32,6 +32,8 @@ def create_label_files(bin_file_path, output_dir, bits_list, num_sm):
         with open(output_file_path, 'w')as f:
             f.write(','.join(map(str, header)))
             f.write('\n')
+            f.write(','.join(map(str, header)))
+            f.write('\n')
             f.write(','.join(map(str,labels)))
 
 parser = argparse.ArgumentParser(
