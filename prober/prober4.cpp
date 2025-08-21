@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     std::signal(SIGTERM, handle_sigint);
 
     // 1) Initialize NVML and get GPU handle
-    if (nvmlInit() != NVML_SUCCESS) {
+    if (nvmlInit_v2() != NVML_SUCCESS) {
         std::cerr << "nvmlInit() failed\n";
         return 1;
     }
@@ -67,6 +67,15 @@ int main(int argc, char* argv[]) {
     while (!stop_requested.load()) {
         // Drain all new samples
         bufCount = static_cast<unsigned int>(buffer.size());
+
+        // *** New: get current GPU temperature ***
+        // FIXME overhead
+        unsigned int tempC = 0;
+        if (nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, &tempC) !=
+            NVML_SUCCESS) {
+          std::cerr << "Failed to get temperature\n";
+        }
+
         ret = nvmlDeviceGetSamples(
             device, sampleType, lastTimestamp,
             &valueType, &bufCount, buffer.data()
@@ -76,13 +85,6 @@ int main(int argc, char* argv[]) {
                 lastTimestamp = buffer[i].timeStamp;               // µs
                 long long ms   = lastTimestamp / 1000;             // → ms
                 double powerW  = buffer[i].sampleValue.uiVal / 1000.0; // mW → W
-
-                // *** New: get current GPU temperature ***
-                unsigned int tempC = 0;
-                if (nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, &tempC) != NVML_SUCCESS) {
-                    std::cerr << "Failed to get temperature\n";
-                }
-
                 samples.emplace_back(ms, powerW, tempC);
             }
         }
