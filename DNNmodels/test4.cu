@@ -19,11 +19,12 @@ __global__ void timedSpinKernel(int N, unsigned long long maxCycles) {
     unsigned long long start = read_globaltimer();
     double idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx >= N) return;
-    float val = idx * 1.0;
+    // float val = idx * 1.0;
     while (read_globaltimer() - start < maxCycles) {
         // some non‑trivial work to hold the SM busy
         //idx = idx * __sinf(idx) + __expf(idx);
-        val = sinf(val)+cosf(val)*sqrtf(val);
+        // val = sinf(val)+cosf(val)*sqrtf(val);
+        idx += idx;
     }
 }
 
