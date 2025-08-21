@@ -11,16 +11,13 @@
 //TODO set TPB to 1 and check results
 // Busy‑spin kernel: runs for maxCycles cycles per thread
 //
-__device__ __forceinline__ unsigned long long read_globaltimer(){
-  unsigned long long t; asm volatile("mov.u64 %0, %%globaltimer;" : "=l"(t)); return t;
-}
 
 __global__ void timedSpinKernel(int N, unsigned long long maxCycles) {
-    unsigned long long start = read_globaltimer();
+    unsigned long long start = clock64();
     double idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx >= N) return;
     // float val = idx * 1.0;
-    while (read_globaltimer() - start < maxCycles) {
+    while (clock64() - start < maxCycles) {
         // some non‑trivial work to hold the SM busy
         //idx = idx * __sinf(idx) + __expf(idx);
         // val = sinf(val)+cosf(val)*sqrtf(val);
@@ -110,15 +107,15 @@ int main(int argc, char** argv) {
         auto pulse_start = std::chrono::high_resolution_clock::now();
         if (v == 0) {
             // idle slot: in background tear down and re-create context + idle kernel
-            // std::thread reset_thread([](){
+            std::thread reset_thread([](){
                 // destroys current CUDA context
-                // cudaDeviceReset();
+                cudaDeviceReset();
                 // next CUDA call will rebuild it
                 //cudaSetDevice(0);
                 //emptyKernel<<<1,1>>>();
                 //cudaDeviceSynchronize();
-            // });
-            // reset_thread.detach();
+            });
+            reset_thread.detach();
 
             // main thread just sleeps
             std::this_thread::sleep_for(
@@ -131,15 +128,15 @@ int main(int argc, char** argv) {
             launchPulse(v * TPB, maxCycles/5, v, TPB);
             launchPulse(v * TPB, maxCycles/5, v, TPB);
             launchPulse(v * TPB, maxCycles/5, v, TPB);
-            // std::thread reset_thread([](){
+            std::thread reset_thread([](){
                 // destroys current CUDA context
-                // cudaDeviceReset();
+                cudaDeviceReset();
                 // next CUDA call will rebuild it
                 //cudaSetDevice(0);
                 //emptyKernel<<<1,1>>>();
                 //cudaDeviceSynchronize();
-            // });
-            // reset_thread.detach();
+            });
+            reset_thread.detach();
         }
         auto pulse_end = std::chrono::high_resolution_clock::now();
 
