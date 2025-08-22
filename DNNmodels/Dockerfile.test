@@ -8,7 +8,16 @@ RUN apt-get update && \
 
 WORKDIR /workspace
 
-COPY test4.cu .
+COPY test_sum.cu .
+COPY test_sfu.cu .
+COPY test_shared.cu .
+COPY test_gemv.cu .
+COPY test_fmul.cu .
+
 COPY input_files/ input_files/
-RUN   nvcc -o test test4.cu -lcudart
-ENTRYPOINT ["./test"]
+
+RUN   nvcc -o test_sum test_sum.cu -lcudart
+RUN   nvcc -o test_sfu test_sfu.cu -lcudart
+RUN   nvcc -o test_shard test_shard.cu -lcudart
+RUN   nvcc -o test_gemv test_gemv.cu -lcudart
+RUN   nvcc -o test_fmul test_fmul.cu -lcudart
