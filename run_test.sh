@@ -22,7 +22,7 @@ for PULSE in 100 90 80 70 60 50 40 30 20; do
       #RUN test
       sudo docker run -it --rm \
         --gpus "device=${MODEL_MIG_UUID}" \
-        test-image $PULSE $PULSE "input_files/pulse_mig${MIG}g.csv"
+        test-image "./test_${TYPE}" $PULSE $PULSE "input_files/pulse_mig${MIG}g.csv"
 
       sudo docker stop prober-container
       sleep 1

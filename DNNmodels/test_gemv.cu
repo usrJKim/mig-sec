@@ -97,7 +97,8 @@ int main(int argc, char** argv) {
     cudaDeviceSynchronize();
     //cudaSetDevice(0);  // Ensure the CUDA context is created
 
-    float* devA, devx;
+    float* devA;
+    float* devx;
     float A[100000];
     float x[56];
     for (int i=0; i<100000; ++i){

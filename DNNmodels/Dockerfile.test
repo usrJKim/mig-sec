@@ -18,6 +18,6 @@ COPY input_files/ input_files/
 
 RUN   nvcc -o test_sum test_sum.cu -lcudart
 RUN   nvcc -o test_sfu test_sfu.cu -lcudart
-RUN   nvcc -o test_shard test_shard.cu -lcudart
+RUN   nvcc -o test_shared test_shared.cu -lcudart
 RUN   nvcc -o test_gemv test_gemv.cu -lcudart
 RUN   nvcc -o test_fmul test_fmul.cu -lcudart

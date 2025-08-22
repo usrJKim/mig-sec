@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     std::signal(SIGTERM, handle_sigint);
 
     // 1) Initialize NVML and get GPU handle
-    if (nvmlInit_v2() != NVML_SUCCESS) {
+    if (nvmlInit() != NVML_SUCCESS) {
         std::cerr << "nvmlInit() failed\n";
         return 1;
     }

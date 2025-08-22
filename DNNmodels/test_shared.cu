@@ -15,7 +15,7 @@
 __global__ void timedSpinKernel(int N, unsigned long long maxCycles) {
     __shared__ float smem[10000];
     unsigned long long start = clock64();
-    double idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx >= N) return;
     float val;
     while (clock64() - start < maxCycles) {
