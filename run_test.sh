@@ -4,22 +4,28 @@
 #====Configuration======
 PROBER_MIG_UUID="MIG_GPU-xxxxx"
 MODEL_MIG_UUID="MIG_GPU-xxxxx"
+MIG=4
 #=======================
+for PULSE in 100 90 80 70 60 50 40 30 20; do
+  for TYPE in sum fmul sfu gemv shared; do
+    for var in {1..10}; do
+      PROBER_OUT="MIG${MIG}g_pulse${PULSE}_${TYPE}_${var}.csv"
 
-for MIG in 1 2 3 4; do
-  PROBER_OUT="MIG${MIG}g_test_IntegerSum.csv"
-  # Run prober
-  sudo docker run --rm --name prober-container \
-    --gpus "device=${PROBER_MIG_UUID}" \
-    -v $(pwd)/outputs:/outputs \
-    prober-image /outputs/prober/${PROBER_OUT} &
+      # Run prober
+      sudo docker run --rm --name prober-container \
+        --gpus "device=${PROBER_MIG_UUID}" \
+        -v "$(pwd)/outputs:/outputs" \
+        prober-image "/outputs/prober/${PROBER_OUT}" &
 
-  sleep 0.1 # wait to run prober first
+      sleep 1 # wait to run prober first
 
-  #RUN test
-  sudo docker run -it --rm \
-    --gpus "device=${MODEL_MIG_UUID}" \
-    test-image 100 100 "input_files/pulse_mig${MIG}g.csv"
+      #RUN test
+      sudo docker run -it --rm \
+        --gpus "device=${MODEL_MIG_UUID}" \
+        test-image $PULSE $PULSE "input_files/pulse_mig${MIG}g.csv"
 
-  sudo docker stop prober-container
+      sudo docker stop prober-container
+      sleep 1
+    done
+  done
 done
